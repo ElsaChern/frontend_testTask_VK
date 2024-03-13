@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# Основное задание: Разработка React-приложения
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Приложение состоит из нескольких частей:
 
-## Available Scripts
+## Блок с кнопкой и текстовым полем.
 
-In the project directory, you can run:
+По нажатию на кнопку выполнить запрос к
+[https://catfact.ninja/fact](https://catfact.ninja/fact). Полученный факт нужно
+записать в текстовое поле и установить курсор после первого слова.
 
-### `npm start`
+## Форма с текстовым полем и кнопкой отправки.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Пользователь вводит своё имя в текстовом поле. По истечении 3-х секунд после
+ввода имени или при отправке формы выполняется запрос к
+[https://api.agify.io/](https://api.agify.io/) с введенным именем в параметре
+name. Ответом будет возраст человека, определенный по имени. Этот ответ нужно
+отобразить под текстовым полем.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Особенности:
 
-### `npm test`
+- Необходимо предотвращать дублирующие запросы (не отправлять запрос с таким же
+  именем).
+- Предусмотреть отправку следующего запроса до того, как текущий был обработан -
+  прерывать запрос, чей ответ нам уже не нужен (частый кейс при медленном
+  интернете).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Дополнительные задания:
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Использовать при реализации библиотеку VKUI (можно вынести формы в разные
+  страницы, используя компоненты View и Panel).
+- Реализовать валидацию поля ввода имени (имя может состоять только из букв).
+- Развернуть данное приложение в виде мини-приложения ВКонтакте. Для этого
+  дополнительно понадобится установить пакет bridge.
+- Плюсом будет использование следующих библиотек и технологий, так как они
+  активно применяются в проектах команды: Архитектурная методология
+  Feature-Sliced Design, TanStack Query для работы с запросами, Typescript,
+  React Hook Form + Yup для работы с формами и их валидацией

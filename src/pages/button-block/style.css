@@ -1,0 +1,5 @@
+.Textarea {
+    min-height: 40px;
+    max-height: 400px;
+    resize: vertical;
+}

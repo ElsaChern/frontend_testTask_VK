@@ -1,0 +1,14 @@
+.Button {
+    height: 28px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #3e3e3e;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.Button:disabled {
+    background: #828282;
+    border: 1px solid #3b3939;
+    cursor: not-allowed;
+}
