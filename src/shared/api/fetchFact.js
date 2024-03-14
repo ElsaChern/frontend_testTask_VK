@@ -1,5 +1,10 @@
-export const fetchFact = async (name) => {
+export const fetchFact = async () => {
   const response = await fetch("https://catfact.ninja/fact")
-  const json = await response.json()
-  return json
+  const data = await response.json()
+
+  if (response.status === 200) {
+    return data
+  }
+
+  throw new Error("Request has failed")
 }

@@ -4,53 +4,61 @@ import Button from "../../entities/ui/button"
 import Navigation from "../../entities/ui/navigation"
 import Container from "../../entities/ui/container"
 import { fetchAge } from "../../shared/api/fetchAge"
+import Loader from "../../entities/ui/loader"
+import Warning from "../../entities/ui/warning/warninig"
 
 const FormTask = () => {
   const [personName, setPersonName] = useState("")
   const [age, setAge] = useState("")
-  const [prevName, setPrevName] = useState("")
-  const [message, setMessage] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [prevName, setPrevName] = useState({})
+  const [warning, setWarning] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
-  console.log(loading)
-  console.log(age)
-
-  const buttonClickedRef = useRef(false)
+  const clickedButton = useRef(false)
   const controllerRef = useRef(new AbortController())
 
   const getAge = async (name) => {
+    setIsLoading(true)
     controllerRef.current.abort()
-    controllerRef.current = new AbortController()
-    const { signal } = controllerRef.current
 
-    try {
-      if (name === prevName) {
-        setMessage("Запрос с таким же именем уже был отправлен")
-        return
+    const signal = controllerRef.current
+
+    if (prevName[name]) {
+      setAge(prevName[name])
+    } else {
+      try {
+        const result = await fetchAge(name, { signal })
+        if (result.age === null) {
+          setWarning("Ваше имя не найдено")
+        } else {
+          setAge(result.age)
+
+          setPrevName((prev) => ({
+            ...prev,
+            [name]: result.age,
+          }))
+        }
+      } catch (error) {
+        setWarning(error.message)
       }
-      const result = await fetchAge(name, { signal })
-      setAge(result.age)
-      setLoading(false)
-      setPrevName(name)
-    } catch (error) {
-      alert(error.message)
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (
-        personName !== prevName &&
+        !prevName[personName] &&
         personName !== "" &&
-        !buttonClickedRef.current
+        !clickedButton.current
       ) {
         getAge(personName)
-        setLoading(true)
       }
     }, 3000)
 
     return () => {
       clearTimeout(timer)
+      // eslint-disable-next-line
       controllerRef.current.abort()
     }
     // eslint-disable-next-line
@@ -58,8 +66,7 @@ const FormTask = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    buttonClickedRef.current = true
-    setLoading(true)
+    clickedButton.current = true
     getAge(personName)
   }
 
@@ -67,27 +74,17 @@ const FormTask = () => {
     const inputValue = e.target.value
     if (/^[a-zA-Z]*$/.test(inputValue)) {
       setPersonName(inputValue)
-      setMessage("")
+      setWarning("")
     } else {
-      setMessage("Введите латинские буквы")
+      setWarning("Введите только латинские буквы")
     }
-    buttonClickedRef.current = false
-  }
-
-  const setAnswer = () => {
-    if (message !== "") {
-      return <p style={{ color: "red" }}>{message}</p>
-    } else if (loading) {
-      return <p>Подождите...</p>
-    } else {
-      return <p>{age ? `Ваш возраст: ${age}` : ""}</p>
-    }
+    clickedButton.current = false
   }
 
   return (
     <Container>
       <Navigation title="На главную" path="/" />
-      <form onSubmit={handleSubmit}>
+      <form className="Form" onSubmit={handleSubmit}>
         <input
           className="Input"
           value={personName}
@@ -95,7 +92,11 @@ const FormTask = () => {
           placeholder="Введите свое имя"
         ></input>
         <Button title="Отправить" disabled={!personName} />
-        {setAnswer()}
+        <Loader isLoading={isLoading}>
+          <Warning text={warning}>
+            <p>{age ? `Ваш возраст: ${age}` : ""}</p>
+          </Warning>
+        </Loader>
       </form>
     </Container>
   )
