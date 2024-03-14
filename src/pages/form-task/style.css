@@ -1,3 +1,9 @@
+.Form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px
+}
+
 .Input {
     width: 300px;
     font-size: 13px;

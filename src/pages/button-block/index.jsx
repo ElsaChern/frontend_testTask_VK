@@ -26,11 +26,14 @@ const ButtonBlock = () => {
   useEffect(() => {
     if (text) {
       const firstIndex = text.indexOf(" ")
-      let cursorPosition = 0
-      if (firstIndex !== -1) {
-        cursorPosition = firstIndex
-      } else {
-        cursorPosition = text.length
+      let cursorPosition = firstIndex !== -1 ? firstIndex : text.length
+
+      if (
+        [",", ".", "!", "?", '"', "'", ":", ";"].includes(
+          text[cursorPosition - 1],
+        )
+      ) {
+        cursorPosition -= 1
       }
       textArea.current.setSelectionRange(cursorPosition, cursorPosition)
     }
