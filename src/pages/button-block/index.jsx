@@ -52,7 +52,8 @@ const ButtonBlock = () => {
         onChange={onChangeHandler}
         rows={5}
         value={text}
-      ></textarea>
+      >
+      </textarea>
     </Container>
   )
 }
