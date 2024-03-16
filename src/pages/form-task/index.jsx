@@ -24,20 +24,28 @@ const FormTask = () => {
     const signal = controllerRef.current
 
     if (prevName[name]) {
-      setAge(prevName[name])
+      if (prevName[name] === -1) {
+        setWarning("Ваше имя не найдено")
+      } else {
+        setAge(prevName[name])
+      }
     } else {
       try {
         const result = await fetchAge(name, { signal })
+        let resultAge
+
         if (result.age === null) {
+          resultAge = -1
           setWarning("Ваше имя не найдено")
         } else {
+          resultAge = result.age
           setAge(result.age)
-
-          setPrevName((prev) => ({
-            ...prev,
-            [name]: result.age,
-          }))
         }
+
+        setPrevName((prev) => ({
+          ...prev,
+          [name]: resultAge,
+        }))
       } catch (error) {
         setWarning(error.message)
       }
@@ -58,10 +66,8 @@ const FormTask = () => {
 
     return () => {
       clearTimeout(timer)
-      // eslint-disable-next-line
       controllerRef.current.abort()
     }
-    // eslint-disable-next-line
   }, [personName])
 
   const handleSubmit = (e) => {
